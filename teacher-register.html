@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container" id="formContainer"></div>
+
+<script>
+    let currentStep = 0;
+
+    function createForm() {
+        const formContainer = document.getElementById('formContainer');
+        formContainer.innerHTML = '';
+
+        if (currentStep === 0) {
+            formContainer.innerHTML = `
+                <h2>Teacher Biodata</h2>
+                <label>First Name: <input type="text" id="firstName" required></label><br>
+                <label>Last Name: <input type="text" id="lastName" required></label><br>
+                <label>Address: <input type="text" id="address" required></label><br>
+                <label>Number: <input type="text" id="number" required></label><br>
+                <button type="button" onclick="nextStep()">Next</button>
+            `;
+        } else if (currentStep === 1) {
+            formContainer.innerHTML = `
+                <h2>Subjects and Classes</h2>
+                <label>Subjects: <input type="text" id="subjects" required placeholder="Comma separated values"></label><br>
+                <label>Classes:</label><br>
+                <select id="classes" multiple required>
+                    <option value="Senior One">Senior One</option>
+                    <option value="Senior Two">Senior Two</option>
+                    <option value="Senior Three">Senior Three</option>
+                    <option value="Senior Four">Senior Four</option>
+                    <option value="Senior Five">Senior Five</option>
+                    <option value="Senior Six">Senior Six</option>
+                </select><br>
+                <button type="button" onclick="prevStep()">Back</button>
+                <button type="button" onclick="nextStep()">Next</button>
+            `;
+        } else if (currentStep === 2) {
+            formContainer.innerHTML = `
+                <h2>Projects and Other Duties</h2>
+                <label>Projects: <textarea id="projects" required></textarea></label><br>
+                <label>Other Duties: <textarea id="otherDuties" required></textarea></label><br>
+                <button type="button" onclick="prevStep()">Back</button>
+                <button type="button" onclick="submitForm()">Submit</button>
+            `;
+        }
+    }
+
+    function nextStep() {
+        if (currentStep === 0 && validateBiodata()) {
+            currentStep++;
+            createForm();
+        } else if (currentStep === 1) {
+            currentStep++;
+            createForm();
+        }
+    }
+
+    function prevStep() {
+        currentStep--;
+        createForm();
+    }
+
+    function validateBiodata() {
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const address = document.getElementById('address').value;
+        const number = document.getElementById('number').value;
+
+        return firstName && lastName && address && number;
+    }
+
+    function submitForm() {
+        const formData = {
+            biodata: {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                address: document.getElementById('address').value,
+                number: document.getElementById('number').value,
+            },
+            subjects: document.getElementById('subjects').value.split(',').map(sub => sub.trim()),
+            classes: Array.from(document.getElementById('classes').selectedOptions).map(option => option.value),
+            projects: document.getElementById('projects').value,
+            otherDuties: document.getElementById('otherDuties').value,
+        };
+
+        // Sending data to the server
+        fetch('YOUR_DATABASE_ENDPOINT', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Registration successful!');
+            // Optionally reset the form or redirect
+            resetForm();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Registration failed. Please try again.');
+        });
+    }
+
+    function resetForm() {
+        currentStep = 0;
+        createForm();
+    }
+
+    // Initialize the form when the page loads
+    window.onload = createForm;
+</script>
+</body>
+</html>
