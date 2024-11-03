@@ -4,220 +4,160 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration Form</title>
-    <link rel="stylesheet" href="css/styles.css">
     <style>
+        /* Basic styles for the form container */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
         }
         .form-container {
-            background-color: #fff;
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .hidden {
-            display: none;
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #555;
+        }
+        input[type="text"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
-            background-color: #4CAF50;
+            width: 100%;
+            padding: 10px 15px;
+            background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 15px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
+            font-size: 16px;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #218838;
+        }
+        .error {
+            color: red;
+            margin-top: -15px;
+            margin-bottom: 15px;
+            font-size: 14px;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
-    <script>
-        // Initialize Supabase
-        const supabaseUrl = 'https://mokqpjrqgjlekuhybclo.supabase.co'; // Replace with your Supabase URL
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1va3FwanJxZ2psZWt1aHliY2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzMDYxOTAsImV4cCI6MjA0NTg4MjE5MH0.ziVCEj_ZxOLg49_srT-BWPlOhzm70ZMTZc64l-n5LSU'; // Replace with your Supabase public anon key
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // Function to create and display the multi-step form
-        function createForm() {
-            const formContainer = document.getElementById('registrationForm');
-            formContainer.innerHTML = `
-                <div id="step1" class="step">
-                    <h2>Student Biodata</h2>
-                    <label for="firstName">First Name:</label>
-                    <input type="text" id="firstName" required>
-                    <label for="lastName">Last Name:</label>
-                    <input type="text" id="lastName" required>
-                    <label for="dob">Date of Birth:</label>
-                    <input type="date" id="dob" required>
-                    <label for="mobile">Mobile Number:</label>
-                    <input type="tel" id="mobile" required>
-                    <label for="class">Class:</label>
-                    <input type="text" id="class" required>
-                    <button type="button" onclick="nextStep(2)">Next</button>
-                </div>
-                <div id="step2" class="step hidden">
-                    <h2>Parent Information</h2>
-                    <h3>Father's Information</h3>
-                    <label for="fatherName">Name:</label>
-                    <input type="text" id="fatherName" required>
-                    <label for="fatherAddress">Address:</label>
-                    <input type="text" id="fatherAddress" required>
-                    <label for="fatherNumber">Mobile Number:</label>
-                    <input type="tel" id="fatherNumber" required>
-                    <label for="fatherStatus">Father Status (Dead/Living):</label>
-                    <select id="fatherStatus">
-                        <option value="living">Living</option>
-                        <option value="dead">Dead</option>
-                    </select>
-                    <h3>Mother's Information</h3>
-                    <label for="motherName">Name:</label>
-                    <input type="text" id="motherName" required>
-                    <label for="motherMobile">Mobile Number:</label>
-                    <input type="tel" id="motherMobile" required>
-                    <label for="motherStatus">Mother Status (Dead/Living):</label>
-                    <select id="motherStatus">
-                        <option value="living">Living</option>
-                        <option value="dead">Dead</option>
-                    </select>
-                    <button type="button" onclick="nextStep(3)">Next</button>
-                </div>
-                <div id="step3" class="step hidden">
-                    <h2>Health Information</h2>
-                    <h3>Health Tests</h3>
-                    <label for="digestiveSystem">Digestive System: Yes/No</label>
-                    <select id="digestiveSystem">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="cns">CNS: Yes/No</label>
-                    <select id="cns">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="reproductive">Reproductive System: Yes/No</label>
-                    <select id="reproductive">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="visual">Visual System: Yes/No</label>
-                    <select id="visual">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="skeletalMuscular">Skeletal Muscular: Yes/No</label>
-                    <select id="skeletalMuscular">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <label for="cardiovascular">Cardiovascular: Yes/No</label>
-                    <select id="cardiovascular">
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
-                    </select>
-                    <button type="button" onclick="nextStep(4)">Next</button>
-                </div>
-                <div id="step4" class="step hidden">
-                    <h2>Review Your Information</h2>
-                    <div id="reviewContent"></div>
-                    <button type="button" onclick="submitForm()">Submit</button>
-                </div>
-            `;
-        }
-
-        function nextStep(step) {
-            // Hide all steps
-            const steps = document.querySelectorAll('.step');
-            steps.forEach((s) => s.classList.add('hidden'));
-
-            // Show the current step
-            document.getElementById(`step${step}`).classList.remove('hidden');
-
-            // If it's the review step, populate the review content
-            if (step === 4) {
-                populateReview();
-            }
-        }
-
-        function populateReview() {
-            const reviewContent = document.getElementById('reviewContent');
-            reviewContent.innerHTML = `
-                <h3>Your Details:</h3>
-                <p><strong>First Name:</strong> ${document.getElementById('firstName').value}</p>
-                <p><strong>Last Name:</strong> ${document.getElementById('lastName').value}</p>
-                <p><strong>Date of Birth:</strong> ${document.getElementById('dob').value}</p>
-                <p><strong>Mobile Number:</strong> ${document.getElementById('mobile').value}</p>
-                <p><strong>Class:</strong> ${document.getElementById('class').value}</p>
-
-                <h3>Parent Information:</h3>
-                <p><strong>Father's Name:</strong> ${document.getElementById('fatherName').value}</p>
-                <p><strong>Father's Address:</strong> ${document.getElementById('fatherAddress').value}</p>
-                <p><strong>Father's Mobile Number:</strong> ${document.getElementById('fatherNumber').value}</p>
-                <p><strong>Father's Status:</strong> ${document.getElementById('fatherStatus').value}</p>
-
-                <p><strong>Mother's Name:</strong> ${document.getElementById('motherName').value}</p>
-                <p><strong>Mother's Mobile Number:</strong> ${document.getElementById('motherMobile').value}</p>
-                <p><strong>Mother's Status:</strong> ${document.getElementById('motherStatus').value}</p>
-
-                <h3>Health Information:</h3>
-                <p><strong>Digestive System:</strong> ${document.getElementById('digestiveSystem').value}</p>
-                <p><strong>CNS:</strong> ${document.getElementById('cns').value}</p>
-                <p><strong>Reproductive System:</strong> ${document.getElementById('reproductive').value}</p>
-                <p><strong>Visual System:</strong> ${document.getElementById('visual').value}</p>
-                <p><strong>Skeletal Muscular:</strong> ${document.getElementById('skeletalMuscular').value}</p>
-                <p><strong>Cardiovascular:</strong> ${document.getElementById('cardiovascular').value}</p>
-            `;
-        }
-
-                async function submitForm() {
-            const formData = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                dob: document.getElementById('dob').value,
-                mobile: document.getElementById('mobile').value,
-                class: document.getElementById('class').value,
-                fatherName: document.getElementById('fatherName').value,
-                fatherAddress: document.getElementById('fatherAddress').value,
-                fatherNumber: document.getElementById('fatherNumber').value,
-                fatherStatus: document.getElementById('fatherStatus').value,
-                motherName: document.getElementById('motherName').value,
-                motherMobile: document.getElementById('motherMobile').value,
-                motherStatus: document.getElementById('motherStatus').value,
-                digestiveSystem: document.getElementById('digestiveSystem').value,
-                cns: document.getElementById('cns').value,
-                reproductive: document.getElementById('reproductive').value,
-                visual: document.getElementById('visual').value,
-                skeletalMuscular: document.getElementById('skeletalMuscular').value,
-                cardiovascular: document.getElementById('cardiovascular').value,
-            };
-
-            // Insert data into Supabase
-            const { data, error } = await supabase
-                .from('students') // Replace with your table name
-                .insert([formData]);
-
-            if (error) {
-                console.error('Error inserting data:', error);
-                alert('There was an error submitting your form. Please try again.');
-            } else {
-                alert('Form submitted successfully!');
-                // Optionally, reset the form or navigate away
-                document.getElementById('registrationForm').reset();
-                createForm(); // Call to reset the form or display success message
-            }
-        }
-
-        // Call the createForm function on page load
-        window.onload = createForm;
-    </script>
 </head>
 <body>
     <div class="form-container">
         <h1>Student Registration Form</h1>
-        <form id="registrationForm"></form>
+        <form id="registrationForm">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" required>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" required>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" required>
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" required>
+            <label for="class">Class:</label>
+            <select id="class" required>
+                <option value="">Select Class</option>
+                <option value="1">Class 1</option>
+                <option value="2">Class 2</option>
+                <!-- Add more options as needed -->
+            </select>
+            <label for="fatherName">Father's Name:</label>
+            <input type="text" id="fatherName" required>
+            <label for="fatherAddress">Father's Address:</label>
+            <input type="text" id="fatherAddress" required>
+            <label for="fatherNumber">Father's Mobile Number:</label>
+            <input type="tel" id="fatherNumber" required>
+            <label for="fatherStatus">Father's Status:</label>
+            <input type="text" id="fatherStatus" required>
+            <label for="motherName">Mother's Name:</label>
+            <input type="text" id="motherName" required>
+            <label for="motherMobile">Mother's Mobile Number:</label>
+            <input type="tel" id="motherMobile" required>
+            <label for="motherStatus">Mother's Status:</label>
+            <input type="text" id="motherStatus" required>
+            <button type="button" onclick="submitForm()">Submit</button>
+            <div id="errorMessage" class="error"></div>
+        </form>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        const supabaseUrl = 'YOUR_SUPABASE_URL';
+        const supabaseKey = 'YOUR_SUPABASE_PUBLIC_ANON_KEY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function submitForm() {
+            // Clear previous error messages
+            document.getElementById('errorMessage').textContent = '';
+
+            // Validate form inputs
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const dob = document.getElementById('dob').value;
+            const mobile = document.getElementById('mobile').value.trim();
+            const selectedClass = document.getElementById('class').value;
+            const fatherName = document.getElementById('fatherName').value.trim();
+            const fatherAddress = document.getElementById('fatherAddress').value.trim();
+            const fatherNumber = document.getElementById('fatherNumber').value.trim();
+            const fatherStatus = document.getElementById('fatherStatus').value.trim();
+            const motherName = document.getElementById('motherName').value.trim();
+            const motherMobile = document.getElementById('motherMobile').value.trim();
+            const motherStatus = document.getElementById('motherStatus').value.trim();
+
+            if (!firstName || !lastName || !dob || !mobile || selectedClass === '' || !fatherName || 
+                !fatherAddress || !fatherNumber || !fatherStatus || !motherName || 
+                !motherMobile || !motherStatus) {
+                document.getElementById('errorMessage').textContent = 'Please fill in all fields.';
+                return;
+            }
+
+            // Prepare the form data
+            const formData = {
+                firstName,
+                lastName,
+                dob,
+                mobile,
+                class: selectedClass,
+                fatherName,
+                fatherAddress,
+                fatherNumber,
+                fatherStatus,
+                motherName,
+                motherMobile,
+                motherStatus,
+            };
+
+            // Submit to Supabase
+            const { data, error } = await supabase.from('students').insert([formData]);
+
+            if (error) {
+                console.error('Error inserting data:', error);
+                document.getElementById('errorMessage').textContent = 'There was an error submitting your form. Please try again.';
+            } else {
+                alert('Form submitted successfully!');
+                document.getElementById('registrationForm').reset();
+            }
+        }
+    </script>
 </body>
 </html>
-
