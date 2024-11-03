@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .hidden {
+            display: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container" id="registrationFormContainer">
+        <h1>Student Registration Form</h1>
+        <form id="registrationForm"></form>
+    </div>
+
+    <script>
+        // Function to create and display the multi-step form
+        function createForm() {
+            const formContainer = document.getElementById('registrationForm');
+            formContainer.innerHTML = `
+                <div id="step1" class="step">
+                    <h2>Student Biodata</h2>
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" required>
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" required>
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" required>
+                    <label for="mobile">Mobile Number:</label>
+                    <input type="tel" id="mobile" required>
+                    <label for="class">Class:</label>
+                    <input type="text" id="class" required>
+                    <button type="button" onclick="nextStep(2)">Next</button>
+                </div>
+                <div id="step2" class="step hidden">
+                    <h2>Parent Information</h2>
+                    <h3>Father's Information</h3>
+                    <label for="fatherName">Name:</label>
+                    <input type="text" id="fatherName" required>
+                    <label for="fatherAddress">Address:</label>
+                    <input type="text" id="fatherAddress" required>
+                    <label for="fatherNumber">Mobile Number:</label>
+                    <input type="tel" id="fatherNumber" required>
+                    <label for="fatherStatus">Father Status (Dead/Living):</label>
+                    <select id="fatherStatus">
+                        <option value="living">Living</option>
+                        <option value="dead">Dead</option>
+                    </select>
+                    <h3>Mother's Information</h3>
+                    <label for="motherName">Name:</label>
+                    <input type="text" id="motherName" required>
+                    <label for="motherMobile">Mobile Number:</label>
+                    <input type="tel" id="motherMobile" required>
+                    <label for="motherStatus">Mother Status (Dead/Living):</label>
+                    <select id="motherStatus">
+                        <option value="living">Living</option>
+                        <option value="dead">Dead</option>
+                    </select>
+                    <button type="button" onclick="nextStep(3)">Next</button>
+                </div>
+                <div id="step3" class="step hidden">
+                    <h2>Health Information</h2>
+                    <h3>Health Tests</h3>
+                    <label for="digestiveSystem">Digestive System: Yes/No</label>
+                    <select id="digestiveSystem">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label for="cns">CNS: Yes/No</label>
+                    <select id="cns">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label for="reproductive">Reproductive System: Yes/No</label>
+                    <select id="reproductive">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label for="visual">Visual System: Yes/No</label>
+                    <select id="visual">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label for="skeletalMuscular">Skeletal Muscular: Yes/No</label>
+                    <select id="skeletalMuscular">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <label for="cardiovascular">Cardiovascular: Yes/No</label>
+                    <select id="cardiovascular">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                    <button type="button" onclick="nextStep(4)">Next</button>
+                </div>
+                <div id="step4" class="step hidden">
+                    <h2>Review Your Information</h2>
+                    <div id="reviewContent"></div>
+                    <button type="button" onclick="submitForm()">Submit</button>
+                </div>
+            `;
+        }
+
+        function nextStep(step) {
+            // Hide all steps
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((s) => s.classList.add('hidden'));
+
+            // Show the current step
+            document.getElementById(`step${step}`).classList.remove('hidden');
+
+            // If it's the review step, populate the review content
+            if (step === 4) {
+                populateReview();
+            }
+        }
+
+        function populateReview() {
+            const reviewContent = document.getElementById('reviewContent');
+            reviewContent.innerHTML = `
+                <h3>Your Details:</h3>
+                <p><strong>First Name:</strong> ${document.getElementById('firstName').value}</p>
+                <p><strong>Last Name:</strong> ${document.getElementById('lastName').value}</p>
+                <p><strong>Date of Birth:</strong> ${document.getElementById('dob').value}</p>
+                <p><strong>Mobile Number:</strong> ${document.getElementById('mobile').value}</p>
+                <p><strong>Class:</strong> ${document.getElementById('class').value}</p>
+
+                <h3>Parent Information:</h3>
+                <p><strong>Father's Name:</strong> ${document.getElementById('fatherName').value}</p>
+                <p><strong>Father's Address:</strong> ${document.getElementById('fatherAddress').value}</p>
+                <p><strong>Father's Mobile Number:</strong> ${document.getElementById('fatherNumber').value}</p>
+                <p><strong>Father's Status:</strong> ${document.getElementById('fatherStatus').value}</p>
+
+                <p><strong>Mother's Name:</strong> ${document.getElementById('motherName').value}</p>
+                <p><strong>Mother's Mobile Number:</strong> ${document.getElementById('motherMobile').value}</p>
+                <p><strong>Mother's Status:</strong> ${document.getElementById('motherStatus').value}</p>
+
+                <h3>Health Information:</h3>
+                <p><strong>Digestive System:</strong> ${document.getElementById('digestiveSystem').value}</p>
+                <p><strong>CNS:</strong> ${document.getElementById('cns').value}</p>
+                <p><strong>Reproductive System:</strong> ${document.getElementById('reproductive').value}</p>
+                <p><strong>Visual System:</strong> ${document.getElementById('visual').value}</p>
+                <p><strong>Skeletal Muscular:</strong> ${document.getElementById('skeletalMuscular').value}</p>
+                <p><strong>Cardiovascular:</strong> ${document.getElementById('cardiovascular').value}</p>
+            `;
+        }
+
+        function submitForm() {
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                dob: document.getElementById('dob').value,
+                mobile: document.getElementById('mobile').value,
+                class: document.getElementById('class').value,
+                father: {
+                                        name: document.getElementById('fatherName').value,
+                    address: document.getElementById('fatherAddress').value,
+                    number: document.getElementById('fatherNumber').value,
+                    status: document.getElementById('fatherStatus').value,
+                },
+                mother: {
+                    name: document.getElementById('motherName').value,
+                    mobile: document.getElementById('motherMobile').value,
+                    status: document.getElementById('motherStatus').value,
+                },
+                healthInfo: {
+                    digestiveSystem: document.getElementById('digestiveSystem').value,
+                    cns: document.getElementById('cns').value,
+                    reproductive: document.getElementById('reproductive').value,
+                    visual: document.getElementById('visual').value,
+                    skeletalMuscular: document.getElementById('skeletalMuscular').value,
+                    cardiovascular: document.getElementById('cardiovascular').value,
+                }
+            };
+
+            // Here, you can send the formData to your database using an AJAX request or fetch API
+            // Example using fetch API (assuming you have a server endpoint to handle this):
+            fetch('YOUR_DATABASE_ENDPOINT', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Registration successful!');
+                // Optionally, reset the form or redirect to another page
+                createForm(); // To reset the form to the beginning
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Registration failed. Please try again.');
+            });
+        }
+
+        // Initialize the form when the page loads
+        window.onload = createForm;
+    </script>
+</body>
+</html>
+
