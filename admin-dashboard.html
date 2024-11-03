@@ -5,41 +5,110 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Add some basic styling for the popup */
+    .popup {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>Admin Dashboard</h1>
+    <nav>
+      <ul>
+        <li><button onclick="redirectToStudentRegistration()">Student Registration</button></li>
+        <li><button onclick="redirectToTeacherRegistration()">Teacher Registration</button></li>
+        <li><button onclick="toggleSearchPopup()">Search Student</button></li>
+      </ul>
+    </nav>
   </header>
-  <nav>
-    <ul>
-      <li><a href="#user-management">User Management</a></li>
-      <li><a href="#class-management">Class Management</a></li>
-      <li><a href="#exam-management">Exam Management</a></li>
-      <li><a href="#fee-management">Fee Management</a></li>
-      <li><a href="#reports">Reports</a></li>
-    </ul>
-  </nav>
+  
   <main>
-    <section id="user-management">
-      <h2>User Management</h2>
-      <!-- Add/edit/remove user interfaces -->
-    </section>
-    <section id="class-management">
-      <h2>Class Management</h2>
-      <!-- Class scheduling interface -->
-    </section>
-    <section id="exam-management">
-      <h2>Exam Management</h2>
-      <!-- Exam scheduling, grades input interface -->
-    </section>
-    <section id="fee-management">
-      <h2>Fee Management</h2>
-      <!-- Fee tracking interface -->
-    </section>
-    <section id="reports">
-      <h2>Reports</h2>
-      <!-- Report generation and viewing -->
-    </section>
+    <h2>Welcome to the Admin Dashboard</h2>
+    <!-- Additional content can go here -->
   </main>
+
+  <!-- Popup for student search -->
+  <div class="popup" id="searchPopup">
+    <div class="popup-content">
+      <h2>Search Student</h2>
+      <label for="studentName">Name:</label>
+      <input type="text" id="studentName">
+      <label for="studentId">ID:</label>
+      <input type="text" id="studentId">
+      <label for="studentClass">Class:</label>
+      <input type="text" id="studentClass">
+      <button onclick="fetchStudentResults()">Search</button>
+      <button onclick="toggleSearchPopup()">Close</button>
+      <div id="searchResults"></div>
+    </div>
+  </div>
+
+  <script>
+    function redirectToStudentRegistration() {
+      window.location.href = "https://kunta-pro.github.io/Fine-hart/student-register.html";
+    }
+
+    function redirectToTeacherRegistration() {
+      window.location.href = "https://kunta-pro.github.io/Fine-hart/teacher-register.html";
+    }
+
+    function toggleSearchPopup() {
+      const popup = document.getElementById('searchPopup');
+      popup.style.display = popup.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function fetchStudentResults() {
+      // Retrieve input values
+      const name = document.getElementById('studentName').value;
+      const studentId = document.getElementById('studentId').value;
+      const studentClass = document.getElementById('studentClass').value;
+
+      // Placeholder for fetching student data from a database
+      // Here you would typically make an AJAX request to your backend
+      // For demo purposes, we'll simulate the response
+
+      const dummyData = [
+        { id: '1', name: 'John Doe', class: '5A', results: 'A+' },
+        { id: '2', name: 'Jane Smith', class: '5B', results: 'B' },
+        { id: '3', name: 'Sam Johnson', class: '5A', results: 'A' }
+      ];
+
+      const resultsDiv = document.getElementById('searchResults');
+      resultsDiv.innerHTML = ''; // Clear previous results
+
+      // Filter the dummy data based on the search criteria
+      const filteredResults = dummyData.filter(student => {
+        return (!name || student.name.toLowerCase().includes(name.toLowerCase())) &&
+               (!studentId || student.id === studentId) &&
+               (!studentClass || student.class === studentClass);
+      });
+
+      // Display results or a message if no results are found
+      if (filteredResults.length > 0) {
+        filteredResults.forEach(student => {
+          resultsDiv.innerHTML += `<p>ID: ${student.id}, Name: ${student.name}, Class: ${student.class}, Results: ${student.results}</p>`;
+        });
+      } else {
+        resultsDiv.innerHTML = '<p>No results found.</p>';
+      }
+    }
+  </script>
 </body>
 </html>
