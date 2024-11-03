@@ -4,160 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Registration Form</title>
-    <style>
-        /* Basic styles for the form container */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .form-container {
-            max-width: 600px;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin: 10px 0 5px;
-            color: #555;
-        }
-        input[type="text"],
-        input[type="date"],
-        input[type="tel"],
-        input[type="email"],
-        select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0 20px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            width: 100%;
-            padding: 10px 15px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .error {
-            color: red;
-            margin-top: -15px;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="form-container">
         <h1>Student Registration Form</h1>
         <form id="registrationForm">
-            <label for="firstName">First Name:</label>
-            <input type="text" id="firstName" required>
-            <label for="lastName">Last Name:</label>
-            <input type="text" id="lastName" required>
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" required>
-            <label for="mobile">Mobile Number:</label>
-            <input type="tel" id="mobile" required>
-            <label for="class">Class:</label>
-            <select id="class" required>
-                <option value="">Select Class</option>
-                <option value="1">Class 1</option>
-                <option value="2">Class 2</option>
-                <!-- Add more options as needed -->
-            </select>
-            <label for="fatherName">Father's Name:</label>
-            <input type="text" id="fatherName" required>
-            <label for="fatherAddress">Father's Address:</label>
-            <input type="text" id="fatherAddress" required>
-            <label for="fatherNumber">Father's Mobile Number:</label>
-            <input type="tel" id="fatherNumber" required>
-            <label for="fatherStatus">Father's Status:</label>
-            <input type="text" id="fatherStatus" required>
-            <label for="motherName">Mother's Name:</label>
-            <input type="text" id="motherName" required>
-            <label for="motherMobile">Mother's Mobile Number:</label>
-            <input type="tel" id="motherMobile" required>
-            <label for="motherStatus">Mother's Status:</label>
-            <input type="text" id="motherStatus" required>
-            <button type="button" onclick="submitForm()">Submit</button>
+            <!-- Step 1: Personal Information -->
+            <div class="form-step active" id="step1">
+                <h2>Personal Information</h2>
+                <label for="firstName">First Name:</label>
+                <input type="text" id="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="lastName" required>
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" required>
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" required>
+                <label for="class">Class:</label>
+                <select id="class" required>
+                    <option value="">Select Class</option>
+                    <option value="1">Class 1</option>
+                    <option value="2">Class 2</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <button type="button" class="next" onclick="nextStep()">Next</button>
+            </div>
+
+            <!-- Step 2: Father Information -->
+            <div class="form-step" id="step2">
+                <h2>Father's Information</h2>
+                <label for="fatherName">Father's Name:</label>
+                <input type="text" id="fatherName" required>
+                <label for="fatherAddress">Father's Address:</label>
+                <input type="text" id="fatherAddress" required>
+                <label for="fatherNumber">Father's Mobile Number:</label>
+                <input type="tel" id="fatherNumber" required>
+                <label for="fatherStatus">Father's Status:</label>
+                <input type="text" id="fatherStatus" required>
+                <button type="button" class="back" onclick="prevStep()">Back</button>
+                <button type="button" class="next" onclick="nextStep()">Next</button>
+            </div>
+
+            <!-- Step 3: Mother Information -->
+            <div class="form-step" id="step3">
+                <h2>Mother's Information</h2>
+                <label for="motherName">Mother's Name:</label>
+                <input type="text" id="motherName" required>
+                <label for="motherMobile">Mother's Mobile Number:</label>
+                <input type="tel" id="motherMobile" required>
+                <label for="motherStatus">Mother's Status:</label>
+                <input type="text" id="motherStatus" required>
+                <button type="button" class="back" onclick="prevStep()">Back</button>
+                <button type="button" class="next" onclick="nextStep()">Next</button>
+            </div>
+
+            <!-- Step 4: Health Information -->
+            <div class="form-step" id="step4">
+                <h2>Health Information</h2>
+                <label for="healthIssues">Any Pre-existing Health Issues:</label>
+                <input type="text" id="healthIssues" required>
+                <label for="medications">Current Medications:</label>
+                <input type="text" id="medications" required>
+                <label for="allergies">Allergies:</label>
+                <input type="text" id="allergies" required>
+                <button type="button" class="back" onclick="prevStep()">Back</button>
+                <button type="button" class="next" onclick="submitForm()">Submit</button>
+            </div>
+
             <div id="errorMessage" class="error"></div>
         </form>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <script>
-        const supabaseUrl = 'YOUR_SUPABASE_URL';
-        const supabaseKey = 'YOUR_SUPABASE_PUBLIC_ANON_KEY';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        async function submitForm() {
-            // Clear previous error messages
-            document.getElementById('errorMessage').textContent = '';
-
-            // Validate form inputs
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName = document.getElementById('lastName').value.trim();
-            const dob = document.getElementById('dob').value;
-            const mobile = document.getElementById('mobile').value.trim();
-            const selectedClass = document.getElementById('class').value;
-            const fatherName = document.getElementById('fatherName').value.trim();
-            const fatherAddress = document.getElementById('fatherAddress').value.trim();
-            const fatherNumber = document.getElementById('fatherNumber').value.trim();
-            const fatherStatus = document.getElementById('fatherStatus').value.trim();
-            const motherName = document.getElementById('motherName').value.trim();
-            const motherMobile = document.getElementById('motherMobile').value.trim();
-            const motherStatus = document.getElementById('motherStatus').value.trim();
-
-            if (!firstName || !lastName || !dob || !mobile || selectedClass === '' || !fatherName || 
-                !fatherAddress || !fatherNumber || !fatherStatus || !motherName || 
-                !motherMobile || !motherStatus) {
-                document.getElementById('errorMessage').textContent = 'Please fill in all fields.';
-                return;
-            }
-
-            // Prepare the form data
-            const formData = {
-                firstName,
-                lastName,
-                dob,
-                mobile,
-                class: selectedClass,
-                fatherName,
-                fatherAddress,
-                fatherNumber,
-                fatherStatus,
-                motherName,
-                motherMobile,
-                motherStatus,
-            };
-
-            // Submit to Supabase
-            const { data, error } = await supabase.from('students').insert([formData]);
-
-            if (error) {
-                console.error('Error inserting data:', error);
-                document.getElementById('errorMessage').textContent = 'There was an error submitting your form. Please try again.';
-            } else {
-                alert('Form submitted successfully!');
-                document.getElementById('registrationForm').reset();
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
