@@ -1,6 +1,12 @@
-// JavaScript to generate and manage the form
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Registration Form</title>
+</head>
+<body>
 
-document.body.innerHTML = `
   <div id="form-container" style="max-width: 500px; margin: auto;">
     <h2>Student Registration Form</h2>
     <form id="registration-form">
@@ -59,50 +65,54 @@ document.body.innerHTML = `
     </form>
     <div id="message"></div>
   </div>
-`;
 
-// Navigation between sections
-function nextSection(sectionNumber) {
-  document.getElementById('section-1').style.display = sectionNumber === 1 ? 'block' : 'none';
-  document.getElementById('section-2').style.display = sectionNumber === 2 ? 'block' : 'none';
-  document.getElementById('section-3').style.display = sectionNumber === 3 ? 'block' : 'none';
-}
-
-// Function to submit the form data to Supabase
-async function submitForm() {
-  const formData = {
-    firstName: document.getElementById("firstName").value,
-    lastName: document.getElementById("lastName").value,
-    class: document.getElementById("class").value,
-    fatherName: document.getElementById("fatherName").value,
-    fatherStatus: document.getElementById("fatherStatus").value,
-    motherName: document.getElementById("motherName").value,
-    motherStatus: document.getElementById("motherStatus").value,
-    allergies: document.getElementById("allergies").value,
-    healthConditions: document.getElementById("healthConditions").value
-  };
-
-  const SUPABASE_URL = "YOUR_SUPABASE_URL";
-  const SUPABASE_API_KEY = "YOUR_SUPABASE_API_KEY";
-
-  try {
-    const response = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": SUPABASE_API_KEY,
-        "Authorization": `Bearer ${SUPABASE_API_KEY}`
-      },
-      body: JSON.stringify(formData)
-    });
-
-    if (response.ok) {
-      document.getElementById("message").innerText = "Form submitted successfully!";
-    } else {
-      document.getElementById("message").innerText = "Failed to submit form.";
+  <script>
+    // Navigation between sections
+    function nextSection(sectionNumber) {
+      document.getElementById('section-1').style.display = sectionNumber === 1 ? 'block' : 'none';
+      document.getElementById('section-2').style.display = sectionNumber === 2 ? 'block' : 'none';
+      document.getElementById('section-3').style.display = sectionNumber === 3 ? 'block' : 'none';
     }
-  } catch (error) {
-    console.error("Error:", error);
-    document.getElementById("message").innerText = "Error submitting form.";
-  }
-}
+
+    // Function to submit the form data to Supabase
+    async function submitForm() {
+      const formData = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        class: document.getElementById("class").value,
+        fatherName: document.getElementById("fatherName").value,
+        fatherStatus: document.getElementById("fatherStatus").value,
+        motherName: document.getElementById("motherName").value,
+        motherStatus: document.getElementById("motherStatus").value,
+        allergies: document.getElementById("allergies").value,
+        healthConditions: document.getElementById("healthConditions").value
+      };
+
+      const SUPABASE_URL = "YOUR_SUPABASE_URL";
+      const SUPABASE_API_KEY = "YOUR_SUPABASE_API_KEY";
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_API_KEY,
+            "Authorization": `Bearer ${SUPABASE_API_KEY}`
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+          document.getElementById("message").innerText = "Form submitted successfully!";
+        } else {
+          document.getElementById("message").innerText = "Failed to submit form.";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        document.getElementById("message").innerText = "Error submitting form.";
+      }
+    }
+  </script>
+
+</body>
+</html>
