@@ -158,16 +158,16 @@
         healthConditions: document.getElementById("healthConditions").value
       };
 
-      const SUPABASE_URL = "YOUR_SUPABASE_URL";
-      const SUPABASE_API_KEY = "YOUR_SUPABASE_API_KEY";
+      const SUPABASE_URL = "https://mokqpjrqgjlekuhybclo.supabase.co";
+      const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1va3FwanJxZ2psZWt1aHliY2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzMDYxOTAsImV4cCI6MjA0NTg4MjE5MH0.ziVCEj_ZxOLg49_srT-BWPlOhzm70ZMTZc64l-n5LSU";
 
       try {
         const response = await fetch(`${SUPABASE_URL}/rest/v1/students`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "apikey": SUPABASE_API_KEY,
-            "Authorization": `Bearer ${SUPABASE_API_KEY}`
+            "apikey": eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1va3FwanJxZ2psZWt1aHliY2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzMDYxOTAsImV4cCI6MjA0NTg4MjE5MH0.ziVCEj_ZxOLg49_srT-BWPlOhzm70ZMTZc64l-n5LSU,
+            "Authorization": `Bearer ${eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1va3FwanJxZ2psZWt1aHliY2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAzMDYxOTAsImV4cCI6MjA0NTg4MjE5MH0.ziVCEj_ZxOLg49_srT-BWPlOhzm70ZMTZc64l-n5LSU}`
           },
           body: JSON.stringify(formData)
         });
