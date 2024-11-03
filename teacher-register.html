@@ -16,12 +16,37 @@
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
         }
         .hidden {
             display: none;
-        }
-        button {
-            margin: 5px;
         }
     </style>
 </head>
@@ -39,17 +64,17 @@
         if (currentStep === 0) {
             formContainer.innerHTML = `
                 <h2>Teacher Biodata</h2>
-                <label>First Name: <input type="text" id="firstName" required></label><br>
-                <label>Last Name: <input type="text" id="lastName" required></label><br>
-                <label>Address: <input type="text" id="address" required></label><br>
-                <label>Number: <input type="text" id="number" required></label><br>
+                <label>First Name: <input type="text" id="firstName" required></label>
+                <label>Last Name: <input type="text" id="lastName" required></label>
+                <label>Address: <input type="text" id="address" required></label>
+                <label>Number: <input type="text" id="number" required></label>
                 <button type="button" onclick="nextStep()">Next</button>
             `;
         } else if (currentStep === 1) {
             formContainer.innerHTML = `
                 <h2>Subjects and Classes</h2>
-                <label>Subjects: <input type="text" id="subjects" required placeholder="Comma separated values"></label><br>
-                <label>Classes:</label><br>
+                <label>Subjects: <input type="text" id="subjects" required placeholder="Comma separated values"></label>
+                <label>Classes:</label>
                 <select id="classes" multiple required>
                     <option value="Senior One">Senior One</option>
                     <option value="Senior Two">Senior Two</option>
@@ -57,15 +82,15 @@
                     <option value="Senior Four">Senior Four</option>
                     <option value="Senior Five">Senior Five</option>
                     <option value="Senior Six">Senior Six</option>
-                </select><br>
+                </select>
                 <button type="button" onclick="prevStep()">Back</button>
                 <button type="button" onclick="nextStep()">Next</button>
             `;
         } else if (currentStep === 2) {
             formContainer.innerHTML = `
                 <h2>Projects and Other Duties</h2>
-                <label>Projects: <textarea id="projects" required></textarea></label><br>
-                <label>Other Duties: <textarea id="otherDuties" required></textarea></label><br>
+                <label>Projects: <textarea id="projects" required></textarea></label>
+                <label>Other Duties: <textarea id="otherDuties" required></textarea></label>
                 <button type="button" onclick="prevStep()">Back</button>
                 <button type="button" onclick="submitForm()">Submit</button>
             `;
