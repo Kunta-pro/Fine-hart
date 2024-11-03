@@ -75,9 +75,8 @@
                 <label for="class">Class:</label>
                 <select id="class" required>
                     <option value="">Select Class</option>
-                    <option value="1">Class 1</option>
-                    <option value="2">Class 2</option>
-                    <!-- Add more options as needed -->
+                    <option value="seniorOne">Senior One</option>
+                    <option value="seniorTwo">Senior Two</option>
                 </select>
                 <button type="button" class="next" onclick="nextStep()">Next</button>
             </div>
@@ -92,7 +91,11 @@
                 <label for="fatherNumber">Father's Mobile Number:</label>
                 <input type="tel" id="fatherNumber" required>
                 <label for="fatherStatus">Father's Status:</label>
-                <input type="text" id="fatherStatus" required>
+                <select id="fatherStatus" required>
+                    <option value="">Select Status</option>
+                    <option value="alive">Alive</option>
+                    <option value="dead">Dead</option>
+                </select>
                 <button type="button" class="back" onclick="prevStep()">Back</button>
                 <button type="button" class="next" onclick="nextStep()">Next</button>
             </div>
@@ -105,7 +108,11 @@
                 <label for="motherMobile">Mother's Mobile Number:</label>
                 <input type="tel" id="motherMobile" required>
                 <label for="motherStatus">Mother's Status:</label>
-                <input type="text" id="motherStatus" required>
+                <select id="motherStatus" required>
+                    <option value="">Select Status</option>
+                    <option value="alive">Alive</option>
+                    <option value="dead">Dead</option>
+                </select>
                 <button type="button" class="back" onclick="prevStep()">Back</button>
                 <button type="button" class="next" onclick="nextStep()">Next</button>
             </div>
@@ -166,18 +173,18 @@
             const fatherName = document.getElementById('fatherName').value.trim();
             const fatherAddress = document.getElementById('fatherAddress').value.trim();
             const fatherNumber = document.getElementById('fatherNumber').value.trim();
-            const fatherStatus = document.getElementById('fatherStatus').value.trim();
+            const fatherStatus = document.getElementById('fatherStatus').value;
             const motherName = document.getElementById('motherName').value.trim();
             const motherMobile = document.getElementById('motherMobile').value.trim();
-            const motherStatus = document.getElementById('motherStatus').value.trim();
+            const motherStatus = document.getElementById('motherStatus').value;
             const healthIssues = document.getElementById('healthIssues').value.trim();
             const medications = document.getElementById('medications').value.trim();
             const allergies = document.getElementById('allergies').value.trim();
 
             // Validate all fields
             if (!firstName || !lastName || !dob || !mobile || selectedClass === '' || !fatherName ||
-                !fatherAddress || !fatherNumber || !fatherStatus || !motherName ||
-                !motherMobile || !motherStatus || !healthIssues || !medications || !allergies) {
+                !fatherAddress || !fatherNumber || fatherStatus === '' || !motherName ||
+                !motherMobile || motherStatus === '' || !healthIssues || !medications || !allergies) {
                 document.getElementById('errorMessage').textContent = 'Please fill in all fields.';
                 return;
             }
@@ -206,14 +213,15 @@
 
             if (error) {
                 console.error('Error inserting data:', error);
-                document.getElementById('errorMessage').textContent = 'There was an error submitting your form. Please try again.';
+                                document.getElementById('errorMessage').textContent = 'There was an error submitting the form. Please try again.';
             } else {
-                alert('Form submitted successfully!');
-                document.getElementById('registrationForm').reset();
-                document.querySelector('.form-step.active').classList.remove('active');
-                document.getElementById('step1').classList.add('active'); // Reset to the first step
+                alert('Registration successful!'); // Display success message
+                document.getElementById('registrationForm').reset(); // Reset the form
+                document.querySelector('.form-step.active').classList.remove('active'); // Hide all steps
+                document.getElementById('step1').classList.add('active'); // Show the first step
             }
         }
     </script>
 </body>
 </html>
+
