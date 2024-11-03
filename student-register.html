@@ -33,14 +33,13 @@
             background-color: #45a049;
         }
     </style>
-</head>
-<body>
-    <div class="form-container" id="registrationFormContainer">
-        <h1>Student Registration Form</h1>
-        <form id="registrationForm"></form>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js/dist/umd/supabase.js"></script>
     <script>
+        // Initialize Supabase
+        const supabaseUrl = 'YOUR_SUPABASE_URL'; // Replace with your Supabase URL
+        const supabaseKey = 'YOUR_SUPABASE_PUBLIC_ANON_KEY'; // Replace with your Supabase public anon key
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
         // Function to create and display the multi-step form
         function createForm() {
             const formContainer = document.getElementById('registrationForm');
@@ -172,58 +171,53 @@
             `;
         }
 
-        function submitForm() {
+                async function submitForm() {
             const formData = {
                 firstName: document.getElementById('firstName').value,
                 lastName: document.getElementById('lastName').value,
                 dob: document.getElementById('dob').value,
                 mobile: document.getElementById('mobile').value,
                 class: document.getElementById('class').value,
-                father: {
-                                        name: document.getElementById('fatherName').value,
-                    address: document.getElementById('fatherAddress').value,
-                    number: document.getElementById('fatherNumber').value,
-                    status: document.getElementById('fatherStatus').value,
-                },
-                mother: {
-                    name: document.getElementById('motherName').value,
-                    mobile: document.getElementById('motherMobile').value,
-                    status: document.getElementById('motherStatus').value,
-                },
-                healthInfo: {
-                    digestiveSystem: document.getElementById('digestiveSystem').value,
-                    cns: document.getElementById('cns').value,
-                    reproductive: document.getElementById('reproductive').value,
-                    visual: document.getElementById('visual').value,
-                    skeletalMuscular: document.getElementById('skeletalMuscular').value,
-                    cardiovascular: document.getElementById('cardiovascular').value,
-                }
+                fatherName: document.getElementById('fatherName').value,
+                fatherAddress: document.getElementById('fatherAddress').value,
+                fatherNumber: document.getElementById('fatherNumber').value,
+                fatherStatus: document.getElementById('fatherStatus').value,
+                motherName: document.getElementById('motherName').value,
+                motherMobile: document.getElementById('motherMobile').value,
+                motherStatus: document.getElementById('motherStatus').value,
+                digestiveSystem: document.getElementById('digestiveSystem').value,
+                cns: document.getElementById('cns').value,
+                reproductive: document.getElementById('reproductive').value,
+                visual: document.getElementById('visual').value,
+                skeletalMuscular: document.getElementById('skeletalMuscular').value,
+                cardiovascular: document.getElementById('cardiovascular').value,
             };
 
-            // Here, you can send the formData to your database using an AJAX request or fetch API
-            // Example using fetch API (assuming you have a server endpoint to handle this):
-            fetch('YOUR_DATABASE_ENDPOINT', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert('Registration successful!');
-                // Optionally, reset the form or redirect to another page
-                createForm(); // To reset the form to the beginning
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Registration failed. Please try again.');
-            });
+            // Insert data into Supabase
+            const { data, error } = await supabase
+                .from('students') // Replace with your table name
+                .insert([formData]);
+
+            if (error) {
+                console.error('Error inserting data:', error);
+                alert('There was an error submitting your form. Please try again.');
+            } else {
+                alert('Form submitted successfully!');
+                // Optionally, reset the form or navigate away
+                document.getElementById('registrationForm').reset();
+                createForm(); // Call to reset the form or display success message
+            }
         }
 
-        // Initialize the form when the page loads
+        // Call the createForm function on page load
         window.onload = createForm;
     </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Student Registration Form</h1>
+        <form id="registrationForm"></form>
+    </div>
 </body>
 </html>
 
